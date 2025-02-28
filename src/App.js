@@ -1,6 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Drawer, IconButton, Box, FormControl, InputLabel, Select, MenuItem, Slider, Button, Typography } from '@mui/material';
+import {
+  Drawer,
+  IconButton,
+  Box,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Slider,
+  Button,
+  Typography
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LocalCafeIcon from '@mui/icons-material/LocalCafe';
 import { jsPDF } from 'jspdf';
 import './App.css';
 
@@ -17,7 +31,7 @@ function App() {
   const [hexSize, setHexSize] = useState(30);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  // Resize canvas to fill viewport
+  // Resize canvas to fill viewport.
   const resizeCanvas = () => {
     const canvas = canvasRef.current;
     if (canvas) {
@@ -121,9 +135,9 @@ function App() {
         for (let i = 0; i < grid.length - 1; i++) {
           for (let j = 0; j < grid[i].length - 1; j++) {
             const pA = grid[i][j],
-                  pB = grid[i+1][j],
-                  pC = grid[i][j+1],
-                  pD = grid[i+1][j+1];
+              pB = grid[i+1][j],
+              pC = grid[i][j+1],
+              pD = grid[i+1][j+1];
             ctx.beginPath();
             ctx.moveTo(pA.x, pA.y);
             ctx.lineTo(pB.x, pB.y);
@@ -310,77 +324,108 @@ function App() {
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
       >
-        <Box sx={{ width: 250, p: 2 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', p: 2 }}>
           <Typography variant="h6" gutterBottom>
             Controls
           </Typography>
-          <FormControl fullWidth margin="normal">
-            <InputLabel id="tiling-select-label">Tiling</InputLabel>
-            <Select
-              labelId="tiling-select-label"
-              value={currentTiling}
-              label="Tiling"
-              onChange={(e) => setCurrentTiling(e.target.value)}
-            >
-              <MenuItem value="triangular">Triangular</MenuItem>
-              <MenuItem value="hexagonal">Hexagonal</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl fullWidth margin="normal">
-            <InputLabel id="mode-select-label">Mode</InputLabel>
-            <Select
-              labelId="mode-select-label"
-              value={currentMode}
-              label="Mode"
-              onChange={(e) => setCurrentMode(e.target.value)}
-            >
-              <MenuItem value="circles">Circles</MenuItem>
-              <MenuItem value="lines">Lines</MenuItem>
-              <MenuItem value="combined">Combined</MenuItem>
-            </Select>
-          </FormControl>
-          <Typography gutterBottom>Tile Size</Typography>
-          <Slider
-            value={currentTiling === 'triangular' ? triSide : hexSize}
-            onChange={(e, newValue) => {
-              if (currentTiling === 'triangular') setTriSide(newValue);
-              else setHexSize(newValue);
-            }}
-            min={10}
-            max={100}
-          />
-          <Typography>
-            {currentTiling === 'triangular' ? triSide : hexSize} px
-          </Typography>
-          <Typography gutterBottom>Circle Size</Typography>
-          <Slider
-            value={circleRadius}
-            onChange={(e, newValue) => setCircleRadius(newValue)}
-            min={1}
-            max={10}
-          />
-          <Typography>{circleRadius} px</Typography>
-          <Box sx={{ mt: 2 }}>
-            <Typography>Circle Color</Typography>
-            <input
-              type="color"
-              value={circleColor}
-              onChange={(e) => setCircleColor(e.target.value)}
-              style={{ width: '100%', height: '40px', border: 'none', padding: 0 }}
+          <Box sx={{ flexGrow: 1 }}>
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="tiling-select-label">Tiling</InputLabel>
+              <Select
+                labelId="tiling-select-label"
+                value={currentTiling}
+                label="Tiling"
+                onChange={(e) => setCurrentTiling(e.target.value)}
+              >
+                <MenuItem value="triangular">Triangular</MenuItem>
+                <MenuItem value="hexagonal">Hexagonal</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="mode-select-label">Mode</InputLabel>
+              <Select
+                labelId="mode-select-label"
+                value={currentMode}
+                label="Mode"
+                onChange={(e) => setCurrentMode(e.target.value)}
+              >
+                <MenuItem value="circles">Circles</MenuItem>
+                <MenuItem value="lines">Lines</MenuItem>
+                <MenuItem value="combined">Combined</MenuItem>
+              </Select>
+            </FormControl>
+            <Typography gutterBottom>Tile Size</Typography>
+            <Slider
+              value={currentTiling === 'triangular' ? triSide : hexSize}
+              onChange={(e, newValue) => {
+                if (currentTiling === 'triangular') setTriSide(newValue);
+                else setHexSize(newValue);
+              }}
+              min={10}
+              max={100}
             />
-          </Box>
-          <Box sx={{ mt: 2 }}>
-            <Typography>Line Color</Typography>
-            <input
-              type="color"
-              value={lineColor}
-              onChange={(e) => setLineColor(e.target.value)}
-              style={{ width: '100%', height: '40px', border: 'none', padding: 0 }}
+            <Typography>
+              {currentTiling === 'triangular' ? triSide : hexSize} px
+            </Typography>
+            <Typography gutterBottom>Circle Size</Typography>
+            <Slider
+              value={circleRadius}
+              onChange={(e, newValue) => setCircleRadius(newValue)}
+              min={1}
+              max={10}
             />
+            <Typography>{circleRadius} px</Typography>
+            <Box sx={{ mt: 2 }}>
+              <Typography>Circle Color</Typography>
+              <input
+                type="color"
+                value={circleColor}
+                onChange={(e) => setCircleColor(e.target.value)}
+                style={{ width: '100%', height: '40px', border: 'none', padding: 0 }}
+              />
+            </Box>
+            <Box sx={{ mt: 2 }}>
+              <Typography>Line Color</Typography>
+              <input
+                type="color"
+                value={lineColor}
+                onChange={(e) => setLineColor(e.target.value)}
+                style={{ width: '100%', height: '40px', border: 'none', padding: 0 }}
+              />
+            </Box>
+            <Button variant="contained" color="primary" fullWidth sx={{ mt: 2 }} onClick={exportToVectorPDF}>
+              Export to PDF (Letter)
+            </Button>
           </Box>
-          <Button variant="contained" color="primary" fullWidth sx={{ mt: 2 }} onClick={exportToVectorPDF}>
-            Export to PDF (Letter)
-          </Button>
+          <Box sx={{ mt: 'auto', pt: 2, borderTop: '1px solid #ccc' }}>
+            <Typography variant="body2">Made by Nicholas Bennett. © 2025</Typography>
+            <Box sx={{ display: 'flex', gap: 1, mt: 1 }}>
+              <IconButton
+                component="a"
+                href="https://www.linkedin.com/in/nicholasrrbennett/"
+                target="_blank"
+                aria-label="LinkedIn"
+              >
+                <LinkedInIcon />
+              </IconButton>
+              <IconButton
+                component="a"
+                href="https://github.com/nrrb/hex-tri-tiling"
+                target="_blank"
+                aria-label="GitHub"
+              >
+                <GitHubIcon />
+              </IconButton>
+              <IconButton
+                component="a"
+                href="https://buymeacoffee.com/nrrb"
+                target="_blank"
+                aria-label="Buy me a coffee"
+              >
+                <LocalCafeIcon />
+              </IconButton>
+            </Box>
+          </Box>
         </Box>
       </Drawer>
       <IconButton
