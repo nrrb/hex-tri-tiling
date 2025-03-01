@@ -5,6 +5,10 @@ I wrote this app to give myself the option for triangular and hexagonal grids an
 to print and draw on. This is written in JavaScript/React using the [Material UI](https://mui.com/material-ui/) sensible defaults,
 and does PDF generation entirely client-side using the [jsPDF](https://github.com/parallax/jsPDF) package. 
 
+This uses [Basis vectors](https://en.wikipedia.org/wiki/Basis_(linear_algebra)) for computing the
+grid points, and uses the [Strategy pattern](https://en.wikipedia.org/wiki/Strategy_pattern) for 
+selecting the drawing method.
+
 I was assisted in writing substantial portions of the code by [ChatGPT](https://chatgpt.com/).
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
