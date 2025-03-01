@@ -1,4 +1,11 @@
-# Getting Started with Create React App
+# PDF Hexagonal/Triangular Tiling Generator
+
+I LOVE graph paper, but sometimes I want to plot something on a different tiling than square. 
+I wrote this app to give myself the option for triangular and hexagonal grids and produce a PDF
+to print and draw on. This is written in JavaScript/React using the [Material UI](https://mui.com/material-ui/) sensible defaults,
+and does PDF generation entirely client-side using the [jsPDF](https://github.com/parallax/jsPDF) package. 
+
+I was assisted in writing substantial portions of the code by [ChatGPT](https://chatgpt.com/).
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -29,42 +36,59 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## Built with assistance from ChatGPT
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Over a series of prompts and my own tweaking, I built this app. I asked ChatGPT for a single prompt that would generate the resulting app:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+Prompt:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+"Please generate a complete React application that uses Material‑UI (MUI) components and jsPDF to create a responsive, full‑viewport tiling tool. The app should include the following features:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Responsive Canvas:
 
-## Learn More
+A canvas that fills the entire viewport and redraws on window resize.
+The canvas displays a grid tiling that can be either triangular or hexagonal.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Grid Tiling Options:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+A control to choose between 'triangular' and 'hexagonal' tiling.
+For triangular tiling, use a 'triSide' value for the side length.
+For hexagonal tiling, use a 'hexSize' value representing the distance from the center to a vertex.
+The grid should be generated based on the canvas dimensions.
 
-### Code Splitting
+Drawing Modes:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+A control to select the drawing mode: 'circles', 'lines', or 'combined'.
+In 'circles' mode, draw small circles (dots) at grid points.
+In 'lines' mode, connect grid points with lines.
+In 'combined' mode, do both.
 
-### Analyzing the Bundle Size
+UI Controls in a Left‑Drawer:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Use Material‑UI’s Drawer component to create a left‑side sliding drawer.
+The drawer should be toggleable via a hamburger icon (use MUI’s MenuIcon).
+Inside the drawer, include controls for:
+Tiling type (triangular or hexagonal) using a Select component.
+Drawing mode using a Select component.
+A slider for tile size (which controls either triSide or hexSize depending on the tiling type).
+A slider for circle size.
+A color picker for circle color.
+A color picker for line color.
+A button to export the drawing as a vector‑based PDF (letter size, 612 x 792 pt).
+In the drawer’s footer, add text that says "© 2025. Made by Nicholas Bennett." and include icon links (using MUI icons) for:
+LinkedIn (link: https://www.linkedin.com/in/nicholasrrbennett/)
+GitHub project (link: https://github.com/nrrb/hex-tri-tiling)
+Buy Me A Coffee (link: https://buymeacoffee.com/nrrb)
 
-### Making a Progressive Web App
+PDF Export:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Use jsPDF to generate a vector-based PDF that uses fixed American letter dimensions (612 x 792 pt).
+The PDF export should generate its own grid based on those dimensions (i.e. without scaling the on‑screen canvas drawing) and “replay” the drawing commands (both lines and circles) as vector instructions.
 
-### Advanced Configuration
+Code Organization:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Provide a complete App.js file with the React functional component using hooks.
+Also provide an App.css file with sensible default styling for a polished, mobile‑friendly UI.
+Please generate the full code for both App.js and App.css."
+```

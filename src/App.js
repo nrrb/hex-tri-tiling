@@ -20,7 +20,7 @@ import './App.css';
 
 function App() {
   const canvasRef = useRef(null);
-  
+
   // State variables
   const [currentTiling, setCurrentTiling] = useState('triangular');
   const [currentMode, setCurrentMode] = useState('circles');
@@ -29,6 +29,7 @@ function App() {
   const [lineColor, setLineColor] = useState('#ADD8E6');
   const [triSide, setTriSide] = useState(50);
   const [hexSize, setHexSize] = useState(30);
+  const [strokeWeight, setStrokeWeight] = useState(1);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   // Resize canvas to fill viewport.
@@ -45,13 +46,11 @@ function App() {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
     return () => window.removeEventListener('resize', resizeCanvas);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     drawCanvas();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentTiling, currentMode, circleRadius, circleColor, lineColor, triSide, hexSize]);
+  }, [currentTiling, currentMode, circleRadius, circleColor, lineColor, triSide, hexSize, strokeWeight]);
 
   // Grid generation functions for on-screen drawing
   const generateTriangularGrid = (width, height) => {
@@ -128,6 +127,9 @@ function App() {
       : generateHexagonalGrid(width, height);
     ctx.clearRect(0, 0, width, height);
 
+    // Set stroke weight
+    ctx.lineWidth = strokeWeight;
+
     // Draw lines if mode is 'lines' or 'combined'
     if (currentMode === 'lines' || currentMode === 'combined') {
       ctx.strokeStyle = lineColor;
@@ -180,7 +182,7 @@ function App() {
             const center = grid[i][j];
             const vertices = getHexagonVertices(center, hexSize);
             vertices.forEach(v => {
-              const key = `${Math.round(v.x * 100) / 100},${Math.round(v.y * 100) / 100}`;
+              const key = `${Math.round(v.x*100)/100},${Math.round(v.y*100)/100}`;
               if (!drawn.has(key)) {
                 drawn.add(key);
                 ctx.beginPath();
@@ -247,12 +249,14 @@ function App() {
       ? generateTriangularGridPDF(pdfWidth, pdfHeight)
       : generateHexagonalGridPDF(pdfWidth, pdfHeight);
 
+    // Draw vector lines if needed.
     if (currentMode === 'lines' || currentMode === 'combined') {
       const hexLine = lineColor.replace('#', '');
-      const lr = parseInt(hexLine.substr(0, 2), 16),
-            lg = parseInt(hexLine.substr(2, 2), 16),
-            lb = parseInt(hexLine.substr(4, 2), 16);
+      const lr = parseInt(hexLine.substr(0,2), 16),
+            lg = parseInt(hexLine.substr(2,2), 16),
+            lb = parseInt(hexLine.substr(4,2), 16);
       pdf.setDrawColor(lr, lg, lb);
+      pdf.setLineWidth(strokeWeight);
       if (currentTiling === 'triangular') {
         for (let i = 0; i < grid.length - 1; i++) {
           for (let j = 0; j < grid[i].length - 1; j++) {
@@ -283,11 +287,12 @@ function App() {
       }
     }
 
+    // Draw vector circles if needed.
     if (currentMode === 'circles' || currentMode === 'combined') {
       const hexCircle = circleColor.replace('#', '');
-      const r = parseInt(hexCircle.substr(0, 2), 16),
-            g = parseInt(hexCircle.substr(2, 2), 16),
-            b = parseInt(hexCircle.substr(4, 2), 16);
+      const r = parseInt(hexCircle.substr(0,2), 16),
+            g = parseInt(hexCircle.substr(2,2), 16),
+            b = parseInt(hexCircle.substr(4,2), 16);
       pdf.setFillColor(r, g, b);
       if (currentTiling === 'triangular') {
         for (let i = 0; i < grid.length; i++) {
@@ -303,7 +308,7 @@ function App() {
             const center = grid[i][j];
             const vertices = getHexagonVertices(center, hexSize);
             vertices.forEach(v => {
-              const key = `${Math.round(v.x * 100) / 100},${Math.round(v.y * 100) / 100}`;
+              const key = `${Math.round(v.x*100)/100},${Math.round(v.y*100)/100}`;
               if (!drawn.has(key)) {
                 drawn.add(key);
                 pdf.circle(v.x, v.y, circleRadius, 'F');
@@ -375,6 +380,14 @@ function App() {
               max={10}
             />
             <Typography>{circleRadius} px</Typography>
+            <Typography gutterBottom>Stroke Weight</Typography>
+            <Slider
+              value={strokeWeight}
+              onChange={(e, newValue) => setStrokeWeight(newValue)}
+              min={1}
+              max={10}
+            />
+            <Typography>{strokeWeight} px</Typography>
             <Box sx={{ mt: 2 }}>
               <Typography>Circle Color</Typography>
               <input
@@ -398,7 +411,7 @@ function App() {
             </Button>
           </Box>
           <Box sx={{ mt: 'auto', pt: 2, borderTop: '1px solid #ccc' }}>
-            <Typography variant="body2">Made by Nicholas Bennett. © 2025</Typography>
+            <Typography variant="body2">© 2025. Made by Nicholas Bennett.</Typography>
             <Box sx={{ display: 'flex', gap: 1, mt: 1 }}>
               <IconButton
                 component="a"
